@@ -9,12 +9,14 @@ This blueprint checks at configured time for all devices that was last seen x ho
 Example of notification bellow:
 ![notification](/media/offline-notification-for-sensors-with-last-seen/notif.jpg)
 
-`actions:
+```yaml
+actions:
   - device_id: a2a0b972c39a402aa8547899f9d15ee7
     domain: mobile_app
     type: notify
     title: Urządzenie Zigbee niedostępne!
-    message: '{{sensors}}'`
+    message: '{{sensors}}'
+```
 
 ## Requirements
 
@@ -22,19 +24,24 @@ This blueprint is intended to work with Zigbee2MQTT devices that has ‘last see
 
 You will need to enable ‘last_seen’ option in zigbee2mqtt configuration:
 
-`advanced:
-  last_seen: ISO_8601_local`
+```yaml
+advanced:
+  last_seen: ISO_8601_local
+```
 
 Remember also to enable ‘last seen’ sensors for all your Zigbee2MQTT devices (it is now disabled by default) in Home Assistant device page! You can also enable all ‘last seen’ sensors by default adding this to your Z2M configuration:
 
-`device_options:
+```yaml
+device_options:
   homeassistant:
     last_seen:
-      enabled_by_default: true`
+      enabled_by_default: true
+```
 
 ## Blueprint
 
-`blueprint:
+```yaml
+blueprint:
   name: Offline detection for Z2M devices with last_seen
   description: Regularly test all sensors with 'last_seen' in name and 'timestamp' device_class
     ('last seen' Z2M sensors) to detect offline and if so execute an action.
@@ -105,4 +112,5 @@ condition:
 action:
 - choose: []
   default: !input 'actions'
-mode: single`
+mode: single
+```
