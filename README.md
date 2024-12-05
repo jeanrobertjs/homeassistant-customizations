@@ -6,6 +6,7 @@ This repository contains a collection of useful Home Assistant customizations : 
 - heiman-hs2wd-e-mqtt-management : Help to enable and to disable the HEIMAN HS2WD-E siren using MQTT
 - offline-notification-for-sensors-with-last-seen : Offline detection for Z2M devices with last_seen
 - [Zigbee2MQTT - Control Alarmo via keypad](https://community.home-assistant.io/t/zigbee2mqtt-control-alarmo-via-keypad/420016)
+- [Low battery level detection & notification for all battery sensors](https://community.home-assistant.io/t/low-battery-level-detection-notification-for-all-battery-sensors/258664)
 
 ## Automations
 n/a
