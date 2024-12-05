@@ -11,7 +11,7 @@ n/a
 ## Scripts
 n/a
 
-# Configurations
+## Configurations
 n/a
 
 ## Links
