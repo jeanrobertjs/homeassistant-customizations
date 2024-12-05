@@ -1,0 +1,169 @@
+blueprint:
+  name: "HEIMAN HS2WD-E management"
+  #Zigbee2MQTT Documentation for HEIMAN HS2WD-E : https://www.zigbee2mqtt.io/devices/HS2WD-E.html
+  description: "Enable or Disable the HEIMAN HS2WD-E siren via MQTT."
+  domain: automation
+  input:
+    input_boolean_entity:
+      name: "An input_boolean entity"
+      description: "This input_boolean entity will be used represent a button the activation of the siren"
+      selector:
+        entity:
+          domain: input_boolean
+          integration: input_boolean
+          multiple: false
+    mqtt_topic:
+      name: "MQTT Topic of the HEIMAN siren"
+      description: "The Mqtt Topic is composed of your Zigbee2MQTT base_topic (see your Z2M Addon Configuration) and the Friendly Name of your siren in Z2M."
+      default: "zigbee2mqtt/SIREN_MQTT_NAME/set"
+      selector:
+        text:
+    action:
+      name: "Action"
+      description: "Choisir entre activer ou désactiver la sirène"
+      selector:
+        select:
+          options:
+            - label: "Enable"
+              value: "enable"
+            - label: "Disable"
+              value: "disable"
+    payload_mode:
+      name: Mode
+      description: "Mode of the warning (sound effect) (default: Emergency)"
+      default: emergency
+      selector:
+        select:
+          mode: dropdown
+          options:
+            - label: Stop
+              value: stop
+            - label: Burglar
+              value: burglar
+            - label: Fire
+              value: fire
+            - label: Emergency
+              value: emergency
+            - label: "Police panic"
+              value: police_panic
+            - label: "Fire Panic"
+              value: fire_panic
+            - label: "Emergency panic"
+              value: emergency_panic
+    payload_level:
+      name: "Sound level"
+      default: very_high
+      selector:
+        select:
+          mode: dropdown
+          options:
+            - label: Low
+              value: low
+            - label: Medium
+              value: medium
+            - label: High
+              value: high
+            - label: "Very high"
+              value: very_high
+    payload_strobe_level:
+      name: "Strobe level"
+      description: "Intensity of the strobe (default: Very high)"
+      default: very_high
+      selector:
+        select:
+          mode: dropdown
+          options:
+            - label: Low
+              value: low
+            - label: Medium
+              value: medium
+            - label: High
+              value: high
+            - label: "Very high"
+              value: very_high
+    payload_strobe:
+      name: "Enable the strobe?"
+      description: "Turn on/off the strobe (light) during warning. (default: False)"
+      default: true
+      selector:
+        boolean:
+    payload_strobe_duty_cycle:
+      name: "Strobe duty cycle"
+      description: "Length of the flash cycle (default: 0)"
+      default: 1
+      selector:
+        number:
+          min: 0
+          max: 10
+    payload_duration:
+      name: "Duration (s)"
+      description: "Duration in seconds of the alarm. (default: 1)"
+      default: 1
+      selector:
+        number:
+          min: 0
+          max: 1800
+          unit_of_measurement: seconds
+  source_url: https://github.com/jeanrobertjs/homeassistant-customizations/blob/main/heiman_hs2wd-e_management_with_z2m/heiman_hs2wd-e_management_with_z2m.yaml
+
+variables:
+  action: !input action
+  mqtt_topic: !input mqtt_topic
+  payload_mode: !input payload_mode
+  payload_level: !input payload_level
+  payload_strobe_level: !input payload_strobe_level
+  payload_strobe: !input payload_strobe
+  payload_strobe_duty_cycle: !input payload_strobe_duty_cycle
+  payload_duration: !input payload_duration
+
+triggers:
+  - trigger: state
+    entity_id: !input input_boolean_entity
+    to: "on"
+    id: to_siren_enabled
+  - trigger: state
+    entity_id: !input input_boolean_entity
+    to: "off"
+    id: to_siren_disabled
+
+condition: []
+
+actions:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id: to_siren_enabled
+        sequence:
+          - action: mqtt.publish
+            metadata: {}
+            data:
+              topic: "{{ mqtt_topic }}"
+              payload: >
+                {{ {
+                  "warning": {
+                    "mode": payload_mode,
+                    "level": payload_level,
+                    "strobe_level": payload_strobe_level,
+                    "strobe": payload_strobe,
+                    "strobe_duty_cycle": payload_strobe_duty_cycle,
+                    "duration": payload_duration
+                  }
+                } | tojson }}
+      - conditions:
+          - condition: trigger
+            id: to_siren_disabled
+        sequence:
+          - action: mqtt.publish
+            metadata: {}
+            data:
+              topic: "{{ mqtt_topic }}"
+              payload: >
+                {{ {
+                  "warning": {
+                    "duration": 0,
+                    "mode": "stop",
+                    "strobe": false
+                  }
+                } | tojson }}
+
+mode: single
