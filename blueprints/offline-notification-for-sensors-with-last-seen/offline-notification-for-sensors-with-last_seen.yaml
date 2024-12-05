@@ -50,7 +50,7 @@ blueprint:
         the names of sensors being offline.
       selector:
         action: {}
-  source_url: https://gist.github.com/Mr-Groch/bf073b142b507e3b6f8154223f81803b
+  source_url: https://github.com/jeanrobertjs/homeassistant-customizations/blob/main/blueprints/offline-notification-for-sensors-with-last-seen/offline-notification-for-sensors-with-last_seen.yaml
 variables:
   day: !input 'day'
   hours: !input 'hours'
