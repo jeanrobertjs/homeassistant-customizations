@@ -1,55 +1,53 @@
 blueprint:
-  name: Availability check label
-  description: Test de la disponibilité d'entités identitées par un label
+  name: Monitor entity availability
+  description: Monitor an entity availability identified with a dedicated label
   domain: automation
-  source_url: https://github.com/argonaute199/availability-check/blob/main/availability_check_label.yaml
+  source_url: https://github.com/jeanrobertjs/homeassistant-customizations/blob/main/blueprints/entity-availability-check/entity_availability_check_label.yaml
 
-  # Entrées du blueprint
+  # Blueprint inputs
   input:
     time1:
-      name: Heure 1
-      description: Heure 1 de test  ( pas d'éxécution si "00:00")
+      name: Test time 1
+      description: 'Note: no execution if "00:00"'
       default: '10:00:00'
       selector:
         time: {}
     time2:
-      name: Heure 2
-      description: Heure 2 de test ( pas d'éxécution si "00:00")
+      name: Test time 2
+      description: 'Note: no execution if "00:00"'
       default: '00:00:00'
       selector:
         time: {}
     time3:
-      name: Heure 3
-      description: Heure 3 de test ( pas d'éxécution si "00:00")
+      name: Test time 3
+      description: 'Note: no execution if "00:00"'
       default: '00:00:00'
       selector:
         time: {}
     time4:
-      name: Heure 4
-      description: Heure 4 de test ( pas d'éxécution si "00:00")
+      name: Test time 4
+      description: 'Note: no execution if "00:00"'
       default: '00:00:00'
       selector:
         time: {}
     time5:
-      name: Heure 5
-      description: Heure 5 de test  ( pas d'éxécution si "00:00")
+      name: Test time 5
+      description: 'Note: no execution if "00:00"'
       default: '00:00:00'
       selector:
         time: {}
-
     selector:
-      name: Label pour surveillance
-      description: Label permettant d'identifier les entités à surveiller
+      name: Label to monitor
+      description: Label to identify entities to be checked
       default: ""
-        
     actions:
-      name: Actions
-      description: Notifications ou autre à exécuter. {{entities}} dans message sera remplacé par la liste des entités non disponibles.
+      name: Actions to do if unavailable entities
+      description: 'Notify or other... {{entities}} in the message will be remplaced by the non-available entity list.'
       selector:
         action:
 
+# Variables
 variables:
-
   selector: !input 'selector'
   time1: !input 'time1'
   time2: !input 'time2'
@@ -62,14 +60,13 @@ variables:
     {% set entity_list = label_entities(selector) %}
 
     {% for item in entity_list %}
-      {% for state in states | selectattr('state', 'match', 'unavailable') | selectattr('entity_id', 'match', item)%}
+      {% for state in states | selectattr('state', 'match', 'unavailable') | selectattr('entity_id', 'match', item) %}
         {% set result.entities = result.entities + [state.name] %}
       {% endfor %}
     {% endfor %}
     {{result.entities|unique|join('\n')}} 
 
-
-# Déclenchement aux heures spécifiées
+# Triggers on specified times
 trigger:
   - platform: time
     at: !input 'time1'
@@ -82,16 +79,14 @@ trigger:
   - platform: time
     at: !input 'time5'
 
-    
-# Ne pas afficher si expression vide
+# Conditions > Not shown if test is empty
 condition:
   - condition: template
     value_template: "{{ entities | length > 5 }}"
   - condition: template
     value_template: "{{(now()) >= today_at('00:00:59')}}"
 
-
-# Actions : executer l'action définie en paramètre
+# Actions : execute the action defined as parameter
 action:
   - choose: []
     default: !input 'actions'
