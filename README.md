@@ -15,5 +15,5 @@ n/a
 n/a
 
 ## Links
-- (fr)[Dialogue avec Telegram](https://www.hacf.fr/ha_integration_telegram/)
-- (fr)[Zigbee2MQTT : bien gérer les disponibilités de ses devices](https://www.hacf.fr/zigbee2mqtt-availability/)
+- (fr) [Dialogue avec Telegram](https://www.hacf.fr/ha_integration_telegram/)
+- (fr) [Zigbee2MQTT : bien gérer les disponibilités de ses devices](https://www.hacf.fr/zigbee2mqtt-availability/)
