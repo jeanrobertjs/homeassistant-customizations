@@ -2,7 +2,8 @@ blueprint:
   name: Monitor entity availability with a label
   description: Monitor an entity availability identified with a dedicated label
   domain: automation
-  source_url: https://github.com/jeanrobertjs/homeassistant-customizations/blob/main/blueprints/entity-availability-check/entity_availability_check_label.yaml
+  # inspired by https://github.com/argonaute199/availability-check/blob/main/availability_check_wildcards.yaml
+  source_url: https://github.com/jeanrobertjs/homeassistant-customizations/blob/main/blueprints/entity-availability-check/monitor_entity_availability_with_label.yaml
 
   # Blueprint inputs
   input:

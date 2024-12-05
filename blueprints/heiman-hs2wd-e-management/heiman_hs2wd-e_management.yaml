@@ -104,7 +104,7 @@ blueprint:
           min: 0
           max: 1800
           unit_of_measurement: seconds
-  source_url: https://github.com/jeanrobertjs/homeassistant-customizations/blob/main/heiman_hs2wd-e_management_with_z2m/heiman_hs2wd-e_management_with_z2m.yaml
+  source_url: https://github.com/jeanrobertjs/homeassistant-customizations/blob/main/blueprints/heiman-hs2wd-e-management/heiman_hs2wd-e_management.yaml
 
 variables:
   action: !input action
