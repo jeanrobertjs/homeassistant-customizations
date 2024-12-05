@@ -1,5 +1,5 @@
 blueprint:
-  name: Monitor entity availability
+  name: Monitor entity availability with a label
   description: Monitor an entity availability identified with a dedicated label
   domain: automation
   source_url: https://github.com/jeanrobertjs/homeassistant-customizations/blob/main/blueprints/entity-availability-check/entity_availability_check_label.yaml
@@ -48,12 +48,12 @@ blueprint:
 
 # Variables
 variables:
-  selector: !input 'selector'
-  time1: !input 'time1'
-  time2: !input 'time2'
-  time3: !input 'time3'
-  time4: !input 'time4'
-  time5: !input 'time5'
+  selector: !input selector
+  time1: !input time1
+  time2: !input time2
+  time3: !input time3
+  time4: !input time4
+  time5: !input time5
 
   entities: >-
     {% set result = namespace(entities=[]) %}
@@ -69,15 +69,15 @@ variables:
 # Triggers on specified times
 trigger:
   - platform: time
-    at: !input 'time1'
+    at: !input time1
   - platform: time
-    at: !input 'time2'
+    at: !input time2
   - platform: time
-    at: !input 'time3'
+    at: !input time3
   - platform: time
-    at: !input 'time4'
+    at: !input time4
   - platform: time
-    at: !input 'time5'
+    at: !input time5
 
 # Conditions > Not shown if test is empty
 condition:
@@ -89,7 +89,7 @@ condition:
 # Actions : execute the action defined as parameter
 action:
   - choose: []
-    default: !input 'actions'
+    default: !input actions
 
 mode: single
 max_exceeded: silent

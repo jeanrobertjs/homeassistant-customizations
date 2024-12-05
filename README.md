@@ -2,7 +2,7 @@
 This repository contains a collection of useful Home Assistant customizations : automations, blueprints, scripts, configurations, links...
 
 ## Blueprints
-- monitor-entity-availability : Check if entities are not available
+- monitor-entity-availability : Check if specified entities are not available
 
 ## Automations
 n/a
